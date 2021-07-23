@@ -71,7 +71,7 @@ export async function name(name: string) {
 
 export async function link(youtubeLink: string) {
     const result = await connection.query(
-        'SELECT * FROM songs WHERE name = $1',
+        'SELECT * FROM songs WHERE "youtubeLink"= $1',
         [youtubeLink]
     );
 
