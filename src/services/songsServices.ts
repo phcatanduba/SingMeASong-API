@@ -31,8 +31,8 @@ export async function hasId(id: number) {
 export async function hasThisSong(name: string, link: string) {
     const resultName = await songsRepositories.name(name);
     const resultLink = await songsRepositories.link(link);
+    const has = resultName.length !== 0 || resultLink.length !== 0;
 
-    const has = resultName.length !== 0 && resultLink.length !== 0;
     return has;
 }
 
