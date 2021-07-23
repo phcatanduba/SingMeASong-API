@@ -1,4 +1,5 @@
 import * as songsRepositories from '../repositories/songsRepositories';
+import joi from 'joi';
 
 export async function randomByStatus() {
     let result: object[];
@@ -33,4 +34,22 @@ export async function hasThisSong(name: string, link: string) {
 
     const has = !(resultName.length === 0 && resultLink.length === 0);
     return has;
+}
+
+export function isValid(name: string, youtubeLink: string) {
+    const songSchema = joi.object().keys({
+        name: joi.string().required(),
+        youtubeLink: joi
+            .string()
+            .pattern(
+                /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+            )
+            .required(),
+    });
+    const { error } = songSchema.validate({ name, youtubeLink });
+    if (error) {
+        return false;
+    } else {
+        return true;
+    }
 }

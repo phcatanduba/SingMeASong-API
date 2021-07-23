@@ -5,9 +5,12 @@ import * as songsServices from '../services/songsServices';
 export async function recommend(req: Request, res: Response) {
     const { name, youtubeLink } = req.body;
     const hasThisSong = await songsServices.hasThisSong(name, youtubeLink);
+    const isValid = songsServices.isValid(name, youtubeLink);
 
-    if (!name || !youtubeLink || hasThisSong) {
+    if (!name || !youtubeLink || !isValid) {
         res.sendStatus(400);
+    } else if (hasThisSong) {
+        res.sendStatus(409);
     } else {
         try {
             await songsRepositories.insert(name, youtubeLink);
