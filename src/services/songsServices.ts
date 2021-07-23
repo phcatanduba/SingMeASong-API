@@ -14,6 +14,6 @@ export async function randomByStatus() {
 }
 
 function random(songs: object[]) {
-    const index = Math.random() * songs.length;
+    const index = Math.floor(Math.random() * songs.length);
     return songs[index];
 }

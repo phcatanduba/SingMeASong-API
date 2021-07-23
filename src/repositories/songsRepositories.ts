@@ -34,15 +34,19 @@ export async function randomByStatus(status: string | void): Promise<Song> {
     let result;
 
     if (status === 'underrated') {
-        result = await connection.query(
-            'SELECT * FROM songs WHERE score < 11 RETURNING *'
-        );
+        result = await connection.query('SELECT * FROM songs WHERE score < 11');
     } else if (status === 'overrated') {
-        result = await connection.query(
-            'SELECT * FROM songs WHERE score > 10 RETURNING *'
-        );
+        result = await connection.query('SELECT * FROM songs WHERE score > 10');
     } else {
-        result = await connection.query('SELECT * FROM songs RETURNING *');
+        result = await connection.query('SELECT * FROM songs');
     }
+    return result.rows;
+}
+
+export async function mostScored(amount: number): Promise<Song> {
+    const result = await connection.query(
+        'SELECT * FROM songs ORDER BY score DESC LIMIT $1',
+        [amount]
+    );
     return result.rows;
 }

@@ -23,4 +23,6 @@ app.post('/recommendations/:id/downvote', (req, res) => {
 
 app.get('/recommendations/random', songsControllers.random);
 
+app.get('/recommendations/top/:amount', songsControllers.mostScored);
+
 export default app;

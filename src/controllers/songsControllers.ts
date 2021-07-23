@@ -32,11 +32,29 @@ export async function vote(req: Request, res: Response, option: string) {
     }
 }
 
-export function random(req: Request, res: Response) {
+export async function random(req: Request, res: Response) {
     try {
-        const song = songsServices.randomByStatus();
+        const song = await songsServices.randomByStatus();
+        console.log(song);
+        if (!song.hasOwnProperty('name')) {
+            res.sendStatus(404);
+        } else {
+            res.send(song);
+        }
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+}
 
-        res.send(song);
+export async function mostScored(req: Request, res: Response) {
+    const amount: number = parseInt(req.params.amount);
+    if (!amount) {
+        res.sendStatus(400);
+    }
+    try {
+        const result: object[] = await songsRepositories.mostScored(amount);
+        res.send(result);
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
