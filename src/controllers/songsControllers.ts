@@ -42,8 +42,7 @@ export async function vote(req: Request, res: Response, option: string) {
 export async function random(req: Request, res: Response) {
     try {
         const song = await songsServices.randomByStatus();
-        console.log(song);
-        if (!song.hasOwnProperty('name')) {
+        if (!song?.hasOwnProperty('name')) {
             res.sendStatus(404);
         } else {
             res.send(song);
