@@ -27,6 +27,7 @@ export async function vote(id: number, option: string) {
             'UPDATE songs SET score = score - 1 WHERE id = $1',
             [id]
         );
+        await deleteNegativeScore();
     }
 }
 
@@ -49,4 +50,34 @@ export async function mostScored(amount: number): Promise<Song> {
         [amount]
     );
     return result.rows;
+}
+
+export async function id(id: number) {
+    const result = await connection.query('SELECT * FROM songs WHERE id = $1', [
+        id,
+    ]);
+
+    return result.rows;
+}
+
+export async function name(name: string) {
+    const result = await connection.query(
+        'SELECT * FROM songs WHERE name = $1',
+        [name]
+    );
+
+    return result.rows;
+}
+
+export async function link(youtubeLink: string) {
+    const result = await connection.query(
+        'SELECT * FROM songs WHERE name = $1',
+        [youtubeLink]
+    );
+
+    return result.rows;
+}
+
+async function deleteNegativeScore() {
+    await connection.query('DELETE FROM songs WHERE score = -5');
 }

@@ -4,7 +4,9 @@ import * as songsServices from '../services/songsServices';
 
 export async function recommend(req: Request, res: Response) {
     const { name, youtubeLink } = req.body;
-    if (!name || !youtubeLink) {
+    const hasThisSong = await songsServices.hasThisSong(name, youtubeLink);
+
+    if (!name || !youtubeLink || hasThisSong) {
         res.sendStatus(400);
     } else {
         try {
@@ -19,7 +21,9 @@ export async function recommend(req: Request, res: Response) {
 
 export async function vote(req: Request, res: Response, option: string) {
     const id: number = parseInt(req.params.id);
-    if (!id) {
+    const hasId = await songsServices.hasId(id);
+
+    if (!id || hasId) {
         res.sendStatus(400);
     } else {
         try {

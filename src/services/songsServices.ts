@@ -17,3 +17,20 @@ function random(songs: object[]) {
     const index = Math.floor(Math.random() * songs.length);
     return songs[index];
 }
+
+export async function hasId(id: number) {
+    const result = await songsRepositories.id(id);
+    if (!(result.length === 0)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+export async function hasThisSong(name: string, link: string) {
+    const resultName = await songsRepositories.name(name);
+    const resultLink = await songsRepositories.link(link);
+
+    const has = !(resultName.length === 0 && resultLink.length === 0);
+    return has;
+}
