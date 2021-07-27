@@ -8,22 +8,20 @@ type Song = {
 }[];
 
 export async function insert(name: string, youtubeLink: string) {
-    const result = await connection.query(
+    await connection.query(
         'INSERT INTO songs (name, "youtubeLink", score) VALUES ($1, $2, $3)',
         [name, youtubeLink, 0]
     );
 }
 
 export async function vote(id: number, option: string) {
-    let result;
-
     if (option === 'upvote') {
-        result = await connection.query(
+        await connection.query(
             'UPDATE songs SET score = score + 1 WHERE id = $1',
             [id]
         );
     } else if (option === 'downvote') {
-        result = await connection.query(
+        await connection.query(
             'UPDATE songs SET score = score - 1 WHERE id = $1',
             [id]
         );
@@ -52,7 +50,7 @@ export async function mostScored(amount: number): Promise<Song> {
     return result.rows;
 }
 
-export async function id(id: number) {
+export async function id(id: number): Promise<Song> {
     const result = await connection.query('SELECT * FROM songs WHERE id = $1', [
         id,
     ]);
@@ -60,7 +58,7 @@ export async function id(id: number) {
     return result.rows;
 }
 
-export async function name(name: string) {
+export async function name(name: string): Promise<Song> {
     const result = await connection.query(
         'SELECT * FROM songs WHERE name = $1',
         [name]
@@ -69,7 +67,7 @@ export async function name(name: string) {
     return result.rows;
 }
 
-export async function link(youtubeLink: string) {
+export async function link(youtubeLink: string): Promise<Song> {
     const result = await connection.query(
         'SELECT * FROM songs WHERE "youtubeLink"= $1',
         [youtubeLink]

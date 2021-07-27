@@ -2,8 +2,13 @@ import { Request, Response } from 'express';
 import * as songsRepositories from '../repositories/songsRepositories';
 import * as songsServices from '../services/songsServices';
 
+interface SongRecommendation {
+    name: string;
+    youtubeLink: string;
+}
+
 export async function recommend(req: Request, res: Response) {
-    const { name, youtubeLink } = req.body;
+    const { name, youtubeLink }: SongRecommendation = req.body;
     const hasThisSong = await songsServices.hasThisSong(name, youtubeLink);
     const isValid = songsServices.isValid(name, youtubeLink);
 
