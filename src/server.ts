@@ -1,9 +1,8 @@
-import app from "./app";
+import "./setup";
+import app, { init } from "./app";
 
-const { NODE_ENV, PORT } = process.env;
-
-const portNum: number = parseInt(PORT || "4000");
-
-app.listen(portNum, () => {
-  console.log(`Server runing on port ${portNum} on ${NODE_ENV}`);
+init().then(() => {
+  app.listen(4000, () => {
+    console.log('Server is listening on port 4000');
+  });
 });

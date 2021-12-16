@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import * as songsRepositories from '../repositories/songsRepositories';
+import { getRepository } from 'typeorm';
+import Song from '../entities/Song';
 import * as songsServices from '../services/songsServices';
 
 interface SongRecommendation {
@@ -18,7 +19,7 @@ export async function recommend(req: Request, res: Response) {
         res.sendStatus(409);
     } else {
         try {
-            await songsRepositories.insert(name, youtubeLink);
+            await getRepository(Song).insert({name, youtubeLink});
             res.sendStatus(201);
         } catch (e) {
             console.log(e);
@@ -35,7 +36,7 @@ export async function vote(req: Request, res: Response, option: string) {
         res.sendStatus(400);
     } else {
         try {
-            await songsRepositories.vote(id, option);
+            await songsServices.vote(id, option);
             res.sendStatus(201);
         } catch (e) {
             console.log(e);
@@ -46,7 +47,7 @@ export async function vote(req: Request, res: Response, option: string) {
 
 export async function random(req: Request, res: Response) {
     try {
-        const song = await songsServices.randomByStatus();
+        const song = await songsServices.getRandomly();
         if (!song?.hasOwnProperty('name')) {
             res.sendStatus(404);
         } else {
@@ -64,7 +65,7 @@ export async function mostScored(req: Request, res: Response) {
         res.sendStatus(400);
     }
     try {
-        const result: object[] = await songsRepositories.mostScored(amount);
+        const result: object[] = await songsServices.mostScored(amount);
         res.send(result);
     } catch (e) {
         console.log(e);

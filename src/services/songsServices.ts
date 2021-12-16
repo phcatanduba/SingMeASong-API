@@ -1,39 +1,42 @@
-import * as songsRepositories from '../repositories/songsRepositories';
+import { getRepository } from "typeorm"
+import Song from "../entities/Song"
+import song from "../interfaces/song"
 import joi from 'joi';
 
-export async function randomByStatus() {
-    let result: object[];
-    if (Math.random() > 0.7) {
-        result = await songsRepositories.randomByStatus('underrated');
-    } else {
-        result = await songsRepositories.randomByStatus('overrated');
-    }
-    if (result.length === 0) {
-        result = await songsRepositories.randomByStatus();
-    }
-    return random(result);
+export async function getRandomly() {
+    let songs = await getRepository(Song).find()
+    let randomIndex = Math.floor(Math.random() * (songs.length))
+    
+    return songs[randomIndex]
 }
 
-function random(songs: object[]) {
-    const index = Math.floor(Math.random() * songs.length);
-    return songs[index];
+export async function hasThisSong(name: string, youtubeLink: string) {
+    let song = await getRepository(Song).find( {where: {name, youtubeLink} })
+    if (song.length == 1)  {
+        return true
+    }
+
+    return false
+}
+
+export async function mostScored(amount: number) {
+    let songs = await getRepository(Song).find({take: 10, order: {score: "DESC"}})
+    return songs
+}
+
+export async function vote(id: number, option: string) {
+    let song = await getRepository(Song).findOne( {where: {id}})
+    song.score++
+    await getRepository(Song).save(song)
 }
 
 export async function hasId(id: number) {
-    const result = await songsRepositories.id(id);
-    if (!(result.length === 0)) {
-        return false;
-    } else {
-        return true;
+    let song = await getRepository(Song).find( { where: {id} } )
+    if (song.length == 1) {
+        return true
     }
-}
 
-export async function hasThisSong(name: string, link: string) {
-    const resultName = await songsRepositories.name(name);
-    const resultLink = await songsRepositories.link(link);
-    const has = resultName.length !== 0 || resultLink.length !== 0;
-
-    return has;
+    return false
 }
 
 export function isValid(name: string, youtubeLink: string) {

@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import "reflect-metadata"
 import connection from './database';
 import * as songsControllers from './controllers/songsControllers';
 
@@ -24,5 +25,9 @@ app.post('/recommendations/:id/downvote', (req, res) => {
 app.get('/recommendations/random', songsControllers.random);
 
 app.get('/recommendations/top/:amount', songsControllers.mostScored);
+
+export async function init() {
+    await connection()
+}
 
 export default app;
