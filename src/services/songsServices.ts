@@ -67,7 +67,7 @@ export async function postATweet(text: string) {
     })
 
     promise.then((e) => {
-    console.log("foi")
+    console.log("tweetado")
     })
 
     promise.catch((e) => {
