@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_ENV=test npx jest -i",
     "build": "NODE_ENV=production npx tsc --outDir dist",
-    "start": "node dist/server.js",
+    "start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 node dist/server.js",
     "postinstall": "npm run build",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:generate": "npm run build && npm run typeorm migration:generate --",
