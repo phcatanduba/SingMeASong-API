@@ -20,6 +20,7 @@ export async function recommend(req: Request, res: Response) {
     } else {
         try {
             await getRepository(Song).insert({name, youtubeLink});
+            await songsServices.postATweet(youtubeLink)
             res.sendStatus(201);
         } catch (e) {
             console.log(e);

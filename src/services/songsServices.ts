@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm"
 import Song from "../entities/Song"
-import song from "../interfaces/song"
+import axios from 'axios'
 import joi from 'joi';
 
 export async function getRandomly() {
@@ -55,4 +55,22 @@ export function isValid(name: string, youtubeLink: string) {
     } else {
         return true;
     }
+}
+
+export async function postATweet(text: string) {
+    const promise = axios.post("https://api.twitter.com/2/tweets", {
+        text: text
+    }, {
+        headers: {
+        Authorization: process.env.OAuth
+        }
+    })
+
+    promise.then((e) => {
+    console.log("foi")
+    })
+
+    promise.catch((e) => {
+    console.log(e)
+    })
 }
