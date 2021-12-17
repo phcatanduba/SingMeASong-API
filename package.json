@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test npx jest -i",
-    "build": "NODE_ENV=production rm -rf ./dist && npx ttsc -P ./tsconfig.json --outDir dist && babel dist -d dist",
+    "build": "NODE_ENV=production npx tsc --outDir dist",
     "start": "node dist/server.js",
     "postinstall": "npm run build",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
