@@ -67,10 +67,10 @@ export async function postATweet(text: string) {
     })
 
     promise.then((e) => {
-    console.log("tweetado")
+        console.log("tweetado")
     })
 
     promise.catch((e) => {
-    console.log(e)
+        console.log(e)
     })
 }
